@@ -49,7 +49,7 @@
 
     <script>
         function getRandomWeight() {
-            // Generate a random weight between 50 and 500 grams
+           
             return Math.floor(Math.random() * (500 - 50 + 1)) + 50;
         }
 
@@ -59,8 +59,8 @@
             if (file) {
                 var reader = new FileReader();
                 reader.onload = function(event) {
-                    var weight = getRandomWeight(); // Simulate reading weight automatically
-                    var points = Math.floor(weight / 100); // 1 point for every 100 grams
+                    var weight = getRandomWeight(); 
+                    var points = Math.floor(weight / 100); 
                     document.getElementById("points").innerHTML = "You earned " + points + " point(s)! You can collect your reward from the vending machine.";
                 };
                 reader.readAsDataURL(file);
