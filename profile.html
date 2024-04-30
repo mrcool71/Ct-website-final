@@ -1,73 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Points Calculator</title>
-    <style>
-        body {
-            background-image: url('https://imgs.search.brave.com/pJdb0Ey4aQ7nWFdeW2R48Dy3t5KpyZmO81XcUglpAtI/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/c2JjMjAyMy5pbi9p/bWFnZXMvaG9tZXBh/Z2ViYW5uZXJzL3Ns/aWRlcjMuanBn');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Points Calculator</title>
+  <style>
+    body {
+      background-image: url("https://imgs.search.brave.com/pJdb0Ey4aQ7nWFdeW2R48Dy3t5KpyZmO81XcUglpAtI/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/c2JjMjAyMy5pbi9p/bWFnZXMvaG9tZXBh/Z2ViYW5uZXJzL3Ns/aWRlcjMuanBn");
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
 
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      transition: height 0.5s ease; /* Added transition for smooth height change */
+    }
 
-        button {
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .chocolate {
+      display: none;
+    }
+
+    .chocolate.visible {
+      display: inline-block;
+      margin: 10px;
+    }
+
+    .chocolate img {
+      width: 100px; /* Adjust the size of chocolate images */
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Points Calculator</h2>
-        <input type="file" id="fileInput" accept="image/*"><br>
-        <button onclick="calculatePoints()">Calculate Points</button>
-        <p id="points"></p>
+  <div class="container">
+    <h2>Welcome User</h2>
+
+    <button onclick="calculatePoints()">Calculate Points</button>
+    <button onclick="redeemPoints()">Redeem Points</button>
+    <p id="points"></p>
+
+    <div id="chocolates" class="visible">
+      <div class="chocolate">
+        <img src="img/kisschocolate.jpg" alt="Kisses">
+        <p>Hersheys Kisses</p>
+        <p>Price: 10 points</p>
+        <button onclick="buyChocolate(10)">Buy</button>
+      </div>
+      <div class="chocolate">
+        <img src="img/kachamangobite.jpeg" alt="Mango Bite">
+        <p>Mango Bite</p>
+        <p>Price: 5 points</p>
+        <button onclick="buyChocolate(5)">Buy</button>
+      </div>
     </div>
+  </div>
 
-    <script>
-        function getRandomWeight() {
-           
-            return Math.floor(Math.random() * (500 - 50 + 1)) + 50;
-        }
+  <script>
+    let totalPoints = 0; // Assuming initial points for the user
 
-        function calculatePoints() {
-            var fileInput = document.getElementById('fileInput');
-            var file = fileInput.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    var weight = getRandomWeight(); 
-                    var points = Math.floor(weight / 100); 
-                    document.getElementById("points").innerHTML = "You earned " + points + " point(s)! You can collect your reward from the vending machine.";
-                };
-                reader.readAsDataURL(file);
-            } else {
-                document.getElementById("points").innerHTML = "No file selected.";
-            }
+    function getRandomWeight() {
+      return Math.floor(Math.random() * (500 - 50 + 1)) + 50;
+    }
+
+    function calculatePoints() {
+      var weight = getRandomWeight();
+      var points = Math.floor(weight / 100)*5;
+      if(points===0){
+        points=5;
+      }
+      totalPoints += points; // Increment total points
+      document.getElementById("points").innerHTML =
+        "Thanks for throwing garbage.You earned " + points + " point(s)! Total points: " + totalPoints;
+    }
+
+    function redeemPoints() {
+      const chocolates = document.querySelectorAll(".chocolate");
+      chocolates.forEach(chocolate => chocolate.classList.toggle("visible"));
+    }
+
+    function buyChocolate(price) {
+      if (totalPoints >= price) {
+        totalPoints -= price;
+        document.getElementById("points").innerHTML =
+          "Points left: " + totalPoints;
+        if(price===10){
+            alert("You bought a Kisses!Collect it from Vending Machine");
         }
-    </script>
+        else{
+            alert("You bought a Mango Bite!Collect it from Vending Machine");
+        }
+      } else {
+        alert("You don't have enough points to buy this chocolate.");
+      }
+    }
+  </script>
 </body>
 </html>
